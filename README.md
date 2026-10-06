@@ -50,14 +50,7 @@ web-medical-portal/
 
 ## 3. Database Connection Configuration
 
-The application reads the MongoDB connection string dynamically from configuration or the `MONGODB_URI` environment variable, ensuring credentials are never exposed in Git or frontend code:
-
-
-To run with an alternative database or local instance, set the environment variable:
-```bash
-# Windows PowerShell
-$env:MONGODB_URI="mongodb://localhost:27017/web_medical_portal"
-```
+The application reads the MongoDB connection string dynamically from configuration or the `MONGODB_URI` environment variable, ensuring credentials are never exposed in Git or frontend code.
 
 ---
 
@@ -82,7 +75,4 @@ $env:MONGODB_URI="mongodb://localhost:27017/web_medical_portal"
    http://localhost:8080/
    ```
 
----
 
-
- | Strict Layered Architecture: `Controller` &rarr; `Service` &rarr; `Repository` &rarr; `MongoDB` with proper DTO encapsulation and global exception handling. |
