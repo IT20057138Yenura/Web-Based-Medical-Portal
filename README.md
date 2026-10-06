@@ -52,10 +52,6 @@ web-medical-portal/
 
 The application reads the MongoDB connection string dynamically from configuration or the `MONGODB_URI` environment variable, ensuring credentials are never exposed in Git or frontend code:
 
-```properties
-spring.data.mongodb.uri=${MONGODB_URI:mongodb+srv://it20057138_db_user:IT20057138@cluster0.rc3mfar.mongodb.net/web_medical_portal?retryWrites=true&w=majority&appName=Cluster0}
-spring.data.mongodb.auto-index-creation=true
-```
 
 To run with an alternative database or local instance, set the environment variable:
 ```bash
@@ -75,7 +71,7 @@ $env:MONGODB_URI="mongodb://localhost:27017/web_medical_portal"
 ### Steps to Run
 1. Open PowerShell and navigate to the project root:
    ```powershell
-   cd "C:\Users\YENURA\.gemini\antigravity\scratch\web-medical-portal"
+   cd "C:\Users\web-medical-portal"
    ```
 2. Build and run the Spring Boot application:
    ```powershell
@@ -88,13 +84,5 @@ $env:MONGODB_URI="mongodb://localhost:27017/web_medical_portal"
 
 ---
 
-## 5. Academic Evaluation Checklist
 
-| Evaluation Area | Implemented Features |
-|---|---|
-| **1. UI Design** | Responsive, clean medical theme (Inter font, healthcare palette, status badges, slot picker grid, confirmation modals, toast alerts, printable receipts). |
-| **2. CRUD Operations** | Full CRUD on Patient Profiles (Create on register, Read, Update, Delete with cascades) and Appointments (Create booking, Read lists/details, Update/Reschedule, Cancel status change, Delete record). |
-| **3. Stable MongoDB Connection** | Resilient connection to cloud MongoDB Atlas (`web_medical_portal` database), automated index creation, startup dataset seeding. |
-| **4. Input Validation** | Frontend & backend validation using Jakarta `@NotBlank`, `@Email`, `@Past`, `@Size`, regex patterns, and slot collision detection. |
-| **5. Functional Correctness** | Unregistered users can browse doctors & schedules; registered users can book, reschedule, cancel, and manage appointments securely without ID tampering. |
-| **6. Software Engineering Structure** | Strict Layered Architecture: `Controller` &rarr; `Service` &rarr; `Repository` &rarr; `MongoDB` with proper DTO encapsulation and global exception handling. |
+ | Strict Layered Architecture: `Controller` &rarr; `Service` &rarr; `Repository` &rarr; `MongoDB` with proper DTO encapsulation and global exception handling. |
