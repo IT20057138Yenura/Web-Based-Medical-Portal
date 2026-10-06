@@ -1,0 +1,100 @@
+# Web-Based Medical Portal
+## Module: Patient Appointment Management
+**Course**: SE2030 Software Engineering  
+**Architecture**: Controller &rarr; Service &rarr; Repository &rarr; MongoDB  
+**Technology Stack**: Java 21 LTS, Spring Boot 3.3.4, MongoDB Atlas / Local, HTML5, CSS3, JavaScript (Fetch API)
+
+---
+
+## 1. Project Overview & Scope
+
+This module represents a self-contained, end-to-end implementation of the **Patient Appointment Management** major function for the Web-Based Medical Portal. It includes:
+- **Public Doctor Directory & Availability**: Guests can search doctors, filter by specialization, and check real-time clinic slot availability before registration or login.
+- **Patient Registration & Authentication**: Safe account creation with BCrypt password hashing, session-based login, logout, and protected patient-specific views.
+- **Patient Profile CRUD**: View, update personal details, and delete patient accounts with confirmation dialogs.
+- **Doctor Data Management**: Pre-seeded active medical specialists (Cardiology, Dermatology, Pediatrics, General Practice, Neurology, Endocrinology) with defined clinic days and hours.
+- **Appointment Management CRUD**:
+  - **Create**: Step-by-step booking wizard with 30-minute interval slot picker, double-booking prevention, and past-date validation.
+  - **Read**: Tabbed appointment dashboard (`All`, `Scheduled`, `Completed`, `Cancelled`) and printable consultation slips.
+  - **Update**: Reschedule date/time with instant conflict detection against other appointments.
+  - **Cancel**: Releases booked time slot back to the public pool immediately.
+  - **Delete**: Permanently clean up cancelled records.
+
+---
+
+## 2. Project Architecture & Structure
+
+```
+web-medical-portal/
+├── pom.xml
+├── README.md
+└── src/
+    ├── main/
+    │   ├── java/com/medicalportal/
+    │   │   ├── MedicalPortalApplication.java
+    │   │   ├── config/             (PasswordEncoderConfig, WebMvcConfig)
+    │   │   ├── controller/         (AuthController, PatientController, DoctorController, AppointmentController)
+    │   │   ├── service/            (AuthService, PatientService, DoctorService, AppointmentService + impls)
+    │   │   ├── repository/         (PatientRepository, DoctorRepository, AppointmentRepository)
+    │   │   ├── model/              (Patient, Doctor, Appointment, AppointmentStatus)
+    │   │   ├── dto/                (Requests and Responses)
+    │   │   ├── exception/          (GlobalExceptionHandler, Custom Exceptions)
+    │   │   ├── security/           (AuthInterceptor, SessionContext)
+    │   │   └── util/               (DataInitializer, IdGenerator)
+    │   └── resources/
+    │       ├── application.properties
+    │       └── static/             (HTML5 pages, CSS stylesheet, JS clients)
+```
+
+---
+
+## 3. Database Connection Configuration
+
+The application reads the MongoDB connection string dynamically from configuration or the `MONGODB_URI` environment variable, ensuring credentials are never exposed in Git or frontend code:
+
+```properties
+spring.data.mongodb.uri=${MONGODB_URI:mongodb+srv://it20057138_db_user:IT20057138@cluster0.rc3mfar.mongodb.net/web_medical_portal?retryWrites=true&w=majority&appName=Cluster0}
+spring.data.mongodb.auto-index-creation=true
+```
+
+To run with an alternative database or local instance, set the environment variable:
+```bash
+# Windows PowerShell
+$env:MONGODB_URI="mongodb://localhost:27017/web_medical_portal"
+```
+
+---
+
+## 4. Running the Application Locally
+
+### Prerequisites
+- **Java**: JDK 21 installed (`java -version`)
+- **Maven**: Apache Maven 3.8+ installed (`mvn -version`)
+- **Network**: Internet connection for MongoDB Atlas access (or local MongoDB on port 27017)
+
+### Steps to Run
+1. Open PowerShell and navigate to the project root:
+   ```powershell
+   cd "C:\Users\YENURA\.gemini\antigravity\scratch\web-medical-portal"
+   ```
+2. Build and run the Spring Boot application:
+   ```powershell
+   mvn spring-boot:run
+   ```
+3. Open your web browser and navigate to:
+   ```
+   http://localhost:8080/
+   ```
+
+---
+
+## 5. Academic Evaluation Checklist
+
+| Evaluation Area | Implemented Features |
+|---|---|
+| **1. UI Design** | Responsive, clean medical theme (Inter font, healthcare palette, status badges, slot picker grid, confirmation modals, toast alerts, printable receipts). |
+| **2. CRUD Operations** | Full CRUD on Patient Profiles (Create on register, Read, Update, Delete with cascades) and Appointments (Create booking, Read lists/details, Update/Reschedule, Cancel status change, Delete record). |
+| **3. Stable MongoDB Connection** | Resilient connection to cloud MongoDB Atlas (`web_medical_portal` database), automated index creation, startup dataset seeding. |
+| **4. Input Validation** | Frontend & backend validation using Jakarta `@NotBlank`, `@Email`, `@Past`, `@Size`, regex patterns, and slot collision detection. |
+| **5. Functional Correctness** | Unregistered users can browse doctors & schedules; registered users can book, reschedule, cancel, and manage appointments securely without ID tampering. |
+| **6. Software Engineering Structure** | Strict Layered Architecture: `Controller` &rarr; `Service` &rarr; `Repository` &rarr; `MongoDB` with proper DTO encapsulation and global exception handling. |
