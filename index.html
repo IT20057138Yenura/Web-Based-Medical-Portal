@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web-Based Medical Portal | Patient Appointment Management</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4.5C5 15.2 8.8 19 13.5 19H14v2h-2a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2h-1v-2h.5c4.7 0 8.5-3.8 8.5-8.5v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1c0 3.6-2.9 6.5-6.5 6.5S9 14.1 9 10.5V6h8v4.5a1 1 0 0 0 2 0z"/></svg>
+                </div>
+                <span>MedicalPortal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="doctors.html">Find Doctors</a></li>
+                <li class="protected-nav-link" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+                <li class="protected-nav-link" style="display: none;"><a href="my-appointments.html">My Appointments</a></li>
+                <li class="protected-nav-link" style="display: none;"><a href="profile.html">My Profile</a></li>
+            </ul>
+
+            <div class="auth-nav" id="navbar-auth-actions">
+                <!-- Injected via auth.js -->
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <span class="badge badge-scheduled" style="margin-bottom: 16px;">Verified Healthcare Specialists</span>
+            <h1 class="hero-title">Reliable Healthcare,<br><span>Effortless Appointments</span></h1>
+            <p class="hero-subtitle">
+                Search licensed medical specialists, view real-time clinic schedules, and manage your consultations in one streamlined portal.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+                <a href="doctors.html" class="btn btn-primary btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    Explore Available Doctors
+                </a>
+                <a href="book-appointment.html" class="btn btn-secondary btn-lg">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    Book an Appointment
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section style="padding: 60px 0;">
+        <div class="container">
+            <div style="text-align: center; margin-bottom: 40px;">
+                <h2 style="font-size: 2rem; color: var(--dark); font-weight: 800; margin-bottom: 8px;">Key Capabilities</h2>
+                <p style="color: var(--muted); font-size: 1.05rem;">Everything you need for seamless patient appointment scheduling</p>
+            </div>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+                <div class="card">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+                    </div>
+                    <h3 style="font-size: 1.15rem; color: var(--dark); margin-bottom: 8px; font-weight: 700;">Public Doctor Directory</h3>
+                    <p style="color: var(--muted); font-size: 0.92rem;">
+                        Patients can explore doctor profiles, specialties, and weekly clinic hours freely without registering or logging in.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--secondary-light); color: var(--secondary); display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
+                    <h3 style="font-size: 1.15rem; color: var(--dark); margin-bottom: 8px; font-weight: 700;">Dynamic Slot Engine</h3>
+                    <p style="color: var(--muted); font-size: 0.92rem;">
+                        Real-time 30-minute interval calculation eliminates double-booking. Cancelled slots immediately return to the public pool.
+                    </p>
+                </div>
+
+                <div class="card">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--success-light); color: var(--success); display: flex; align-items: center; justify-content: center; margin-bottom: 18px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <h3 style="font-size: 1.15rem; color: var(--dark); margin-bottom: 8px; font-weight: 700;">Full Appointment Lifecycle</h3>
+                    <p style="color: var(--muted); font-size: 0.92rem;">
+                        Create, view, reschedule date/time, cancel, or delete appointments with complete audit trails and ownership security.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MediPortal Healthcare System &bull; Patient Appointment Management</p>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Registration | MediPortal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4.5C5 15.2 8.8 19 13.5 19H14v2h-2a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2h-1v-2h.5c4.7 0 8.5-3.8 8.5-8.5v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1c0 3.6-2.9 6.5-6.5 6.5S9 14.1 9 10.5V6h8v4.5a1 1 0 0 0 2 0z"/></svg>
+                </div>
+                <span>MediPortal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="doctors.html">Find Doctors</a></li>
+                <li class="protected-nav-link" style="display: none;"><a href="dashboard.html">Dashboard</a></li>
+                <li class="protected-nav-link" style="display: none;"><a href="my-appointments.html">My Appointments</a></li>
+                <li class="protected-nav-link" style="display: none;"><a href="profile.html">My Profile</a></li>
+            </ul>
+
+            <div class="auth-nav">
+                <a href="login.html" class="btn btn-secondary btn-sm">Log In</a>
+            </div>
+        </div>
+    </header>
+
+    <main style="padding: 50px 0; flex-grow: 1;">
+        <div class="container" style="max-width: 640px;">
+            <div class="card">
+                <div style="text-align: center; margin-bottom: 28px;">
+                    <h1 style="font-size: 1.8rem; color: var(--dark); font-weight: 800;">Create Patient Account</h1>
+                    <p style="color: var(--muted); font-size: 0.95rem; margin-top: 4px;">Register to schedule and manage your medical appointments</p>
+                </div>
+
+                <div id="register-alert" style="display: none; padding: 12px 16px; border-radius: var(--radius-md); margin-bottom: 20px; font-size: 0.9rem;"></div>
+
+                <form id="register-form">
+                    <div class="form-group">
+                        <label class="form-label" for="full-name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="full-name" class="form-control" placeholder="e.g. Sarah Jenkins" required minlength="2" maxlength="100">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" class="form-control" placeholder="name@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
+                            <input type="tel" id="phone" class="form-control" placeholder="+1-555-019-2834" required>
+                        </div>
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="dob">Date of Birth <span class="required">*</span></label>
+                            <input type="date" id="dob" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="gender">Gender <span class="required">*</span></label>
+                            <select id="gender" class="form-control" required>
+                                <option value="">Select gender</option>
+                                <option value="Female">Female</option>
+                                <option value="Male">Male</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="address">Residential Address <span class="required">*</span></label>
+                        <input type="text" id="address" class="form-control" placeholder="e.g. 422 Elmwood Street, Suite 3B" required maxlength="255">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                        <div class="form-group">
+                            <label class="form-label" for="password">Password <span class="required">*</span></label>
+                            <input type="password" id="password" class="form-control" placeholder="Min. 8 characters" required minlength="8">
+                            <div class="form-hint">At least 8 characters</div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="confirm-password">Confirm Password <span class="required">*</span></label>
+                            <input type="password" id="confirm-password" class="form-control" placeholder="Re-type password" required>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 28px;">
+                        <button type="submit" id="submit-btn" class="btn btn-primary btn-lg" style="width: 100%;">
+                            Complete Registration
+                        </button>
+                    </div>
+                </form>
+
+                <div style="text-align: center; margin-top: 24px; font-size: 0.9rem; color: var(--muted);">
+                    Already have an account? <a href="login.html" style="font-weight: 600;">Log in here</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MediPortal Healthcare System &bull; Patient Appointment Management</p>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // Set max date of birth to yesterday
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        document.getElementById('dob').max = yesterday.toISOString().split('T')[0];
+
+        const form = document.getElementById('register-form');
+        const alertBox = document.getElementById('register-alert');
+        const submitBtn = document.getElementById('submit-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            alertBox.style.display = 'none';
+
+            const fullName = document.getElementById('full-name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const dateOfBirth = document.getElementById('dob').value;
+            const gender = document.getElementById('gender').value;
+            const address = document.getElementById('address').value.trim();
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm-password').value;
+
+            // Frontend password match verification
+            if (password !== confirmPassword) {
+                showAlert('Passwords do not match. Please re-enter your password.', 'danger');
+                return;
+            }
+
+            if (password.length < 8) {
+                showAlert('Password must be at least 8 characters long.', 'danger');
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Registering account...';
+
+            try {
+                const res = await API.post('/api/auth/register', {
+                    fullName,
+                    email,
+                    password,
+                    phone,
+                    dateOfBirth,
+                    gender,
+                    address
+                });
+
+                if (res.success) {
+                    showToast('Registration successful! Redirecting to login...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'login.html?registered=true';
+                    }, 1200);
+                }
+            } catch (err) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Complete Registration';
+                showAlert(err.message || 'Registration failed. Please review your details and try again.', 'danger');
+            }
+        });
+
+        function showAlert(msg, type) {
+            alertBox.textContent = msg;
+            alertBox.style.display = 'block';
+            if (type === 'danger') {
+                alertBox.style.background = 'var(--danger-light)';
+                alertBox.style.color = 'var(--danger)';
+                alertBox.style.border = '1px solid var(--danger)';
+            } else {
+                alertBox.style.background = 'var(--success-light)';
+                alertBox.style.color = 'var(--success)';
+                alertBox.style.border = '1px solid var(--success)';
+            }
+        }
+    </script>
+</body>
+</html>
