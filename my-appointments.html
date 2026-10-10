@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Appointments | MediPortal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        .filter-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            padding: 8px 18px;
+            border-radius: var(--radius-md);
+            border: 1px solid transparent;
+            background: transparent;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--muted);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .filter-tab:hover {
+            color: var(--dark);
+            background: var(--light-bg);
+        }
+        .filter-tab.active {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border-color: rgba(2, 132, 199, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4.5C5 15.2 8.8 19 13.5 19H14v2h-2a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2h-1v-2h.5c4.7 0 8.5-3.8 8.5-8.5v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1c0 3.6-2.9 6.5-6.5 6.5S9 14.1 9 10.5V6h8v4.5a1 1 0 0 0 2 0z"/></svg>
+                </div>
+                <span>MediPortal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="doctors.html">Find Doctors</a></li>
+                <li class="protected-nav-link"><a href="dashboard.html">Dashboard</a></li>
+                <li class="protected-nav-link"><a href="my-appointments.html" class="active">My Appointments</a></li>
+                <li class="protected-nav-link"><a href="profile.html">My Profile</a></li>
+            </ul>
+
+            <div class="auth-nav" id="navbar-auth-actions"></div>
+        </div>
+    </header>
+
+    <main style="padding: 40px 0; flex-grow: 1;">
+        <div class="container">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 24px;">
+                <div>
+                    <h1 style="font-size: 2rem; color: var(--dark); font-weight: 800;">My Appointments</h1>
+                    <p style="color: var(--muted); font-size: 0.95rem;">Review, reschedule, or manage your scheduled medical appointments</p>
+                </div>
+                <div>
+                    <a href="book-appointment.html" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Book New Appointment
+                    </a>
+                </div>
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="filter-tabs">
+                <button class="filter-tab active" data-status="">All Appointments</button>
+                <button class="filter-tab" data-status="SCHEDULED">Scheduled</button>
+                <button class="filter-tab" data-status="COMPLETED">Completed</button>
+                <button class="filter-tab" data-status="CANCELLED">Cancelled</button>
+            </div>
+
+            <!-- Appointments Table Container -->
+            <div class="card" style="padding: 0; overflow: hidden;">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Appointment ID</th>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Date</th>
+                                <th>Time</th>
+                                <th>Status</th>
+                                <th style="text-align: right;">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointments-tbody">
+                            <tr>
+                                <td colspan="7" style="text-align: center; color: var(--muted); padding: 40px;">
+                                    Loading your appointments...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MediPortal Healthcare System &bull; Patient Appointment Management</p>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/appointments.js"></script>
+</body>
+</html>

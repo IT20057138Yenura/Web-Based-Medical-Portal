@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Details | MediPortal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        #printable-receipt {
+            display: none;
+        }
+
+        @media print {
+            @page {
+                size: A4 portrait;
+                margin: 10mm;
+            }
+            html, body {
+                height: auto !important;
+                min-height: 0 !important;
+                overflow: visible !important;
+            }
+            header.navbar, footer, .no-print, #details-card {
+                display: none !important;
+            }
+            body {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            main {
+                padding: 0 !important;
+                margin: 0 !important;
+                min-height: 0 !important;
+            }
+            .container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #printable-receipt {
+                display: block !important;
+                box-sizing: border-box !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 8mm 10mm !important;
+                border: 2px solid #000000 !important;
+                border-radius: 0 !important;
+                background: #ffffff !important;
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+                color: #000000 !important;
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+                page-break-after: avoid !important;
+            }
+            .rec-header {
+                text-align: center;
+                border-bottom: 2px solid #000000;
+                padding-bottom: 10px;
+                margin-bottom: 12px;
+            }
+            .rec-header h2 {
+                font-size: 22pt;
+                font-weight: 800;
+                margin: 0 0 4px 0;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+            .rec-header p {
+                font-size: 11pt;
+                margin: 2px 0 0 0;
+                color: #333333;
+            }
+            .rec-token {
+                text-align: center;
+                background: #f1f5f9;
+                border: 2px dashed #000000;
+                padding: 10px 12px;
+                margin: 0 0 12px 0;
+                font-size: 18pt;
+                font-weight: 800;
+                letter-spacing: 1px;
+            }
+            .rec-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 10px 16px;
+                margin-bottom: 10px;
+            }
+            .rec-block {
+                min-width: 0;
+            }
+            .rec-section-title {
+                font-size: 10pt;
+                font-weight: 800;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+                color: #444444;
+                margin: 0 0 6px 0;
+                padding-bottom: 4px;
+                border-bottom: 1px solid #cbd5e1;
+            }
+            .rec-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                gap: 8px;
+                font-size: 12pt;
+                margin-bottom: 6px;
+                border-bottom: 1px dotted #e2e8f0;
+                padding-bottom: 4px;
+            }
+            .rec-row span:first-child {
+                flex-shrink: 0;
+                font-weight: 600;
+                color: #334155;
+            }
+            .rec-row strong,
+            .rec-row span:last-child {
+                text-align: right;
+                font-weight: 700;
+            }
+            .rec-reason {
+                font-size: 11pt;
+                line-height: 1.35;
+                padding: 8px 10px;
+                margin: 0 0 6px 0;
+                border: 1px solid #cbd5e1;
+                border-radius: 4px;
+                background: #f8fafc;
+            }
+            .rec-footer {
+                text-align: center;
+                border-top: 2px solid #000000;
+                padding-top: 10px;
+                margin-top: 8px;
+                font-size: 10pt;
+                line-height: 1.45;
+                color: #444444;
+            }
+            .rec-footer p {
+                margin: 3px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4.5C5 15.2 8.8 19 13.5 19H14v2h-2a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2h-1v-2h.5c4.7 0 8.5-3.8 8.5-8.5v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1c0 3.6-2.9 6.5-6.5 6.5S9 14.1 9 10.5V6h8v4.5a1 1 0 0 0 2 0z"/></svg>
+                </div>
+                <span>MediPortal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="doctors.html">Find Doctors</a></li>
+                <li class="protected-nav-link"><a href="dashboard.html">Dashboard</a></li>
+                <li class="protected-nav-link"><a href="my-appointments.html" class="active">My Appointments</a></li>
+                <li class="protected-nav-link"><a href="profile.html">My Profile</a></li>
+            </ul>
+
+            <div class="auth-nav" id="navbar-auth-actions"></div>
+        </div>
+    </header>
+
+    <main style="padding: 40px 0; flex-grow: 1;">
+        <div class="container" style="max-width: 780px;">
+            <div class="no-print" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+                <a href="my-appointments.html" style="font-weight: 600; font-size: 0.9rem;">&larr; Back to My Appointments</a>
+                <button onclick="window.print()" class="btn btn-secondary btn-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    Print Booking Receipt
+                </button>
+            </div>
+
+            <!-- Details Card (Visible on Screen) -->
+            <div class="card" id="details-card">
+                <div style="text-align: center; padding: 40px;">
+                    <p style="color: var(--muted);">Loading appointment details...</p>
+                </div>
+            </div>
+
+            <!-- Full-page booking receipt (shown only when printing / saving as PDF) -->
+            <div id="printable-receipt" class="receipt-slip"></div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MediPortal Healthcare System &bull; Patient Appointment Management</p>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const appointmentId = urlParams.get('id');
+        const isNewBooking = urlParams.get('new');
+
+        let appointmentData = null;
+
+        async function loadAppointmentDetails() {
+            const user = await Auth.requireAuth();
+            if (!user) return;
+
+            if (!appointmentId) {
+                window.location.href = 'my-appointments.html';
+                return;
+            }
+
+            if (isNewBooking) {
+                showToast('Appointment successfully confirmed! Here is your booking slip.', 'success');
+            }
+
+            try {
+                const res = await API.get(`/api/appointments/${encodeURIComponent(appointmentId)}`);
+                if (res.success && res.data) {
+                    appointmentData = res.data;
+                    renderDetailsCard(res.data);
+                }
+            } catch (err) {
+                document.getElementById('details-card').innerHTML = `
+                    <div class="empty-state">
+                        <h3>Appointment Not Found</h3>
+                        <p>${escapeHtml(err.message || 'Unable to locate appointment.')}</p>
+                        <a href="my-appointments.html" class="btn btn-secondary">Return to Appointments</a>
+                    </div>
+                `;
+            }
+        }
+
+        function renderDetailsCard(apt) {
+            const isScheduled = apt.status === 'SCHEDULED';
+            const isCancelled = apt.status === 'CANCELLED';
+
+            document.getElementById('details-card').innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 20px; border-bottom: 2px solid var(--border); margin-bottom: 24px;">
+                    <div>
+                        <span style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700;">Official Consultation Slip</span>
+                        <h2 style="font-size: 1.6rem; color: var(--dark); font-weight: 800; margin-top: 2px;">
+                            Appointment <span style="color: var(--primary);">${escapeHtml(apt.appointmentId)}</span>
+                        </h2>
+                        <span style="font-size: 0.85rem; color: var(--muted);">Booked on: ${new Date(apt.createdAt).toLocaleString()}</span>
+                    </div>
+                    <div>
+                        <span class="badge badge-${apt.status.toLowerCase()}" style="font-size: 0.9rem; padding: 6px 14px;">
+                            ${escapeHtml(apt.status)}
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Consultation Details Grid -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px;">
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 4px;">Doctor</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">${escapeHtml(apt.doctorName)}</div>
+                        <span class="doctor-specialty" style="margin-top: 4px;">${escapeHtml(apt.specialization)}</span>
+                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Doctor ID: ${escapeHtml(apt.doctorId)}</div>
+                    </div>
+
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 4px;">Patient</div>
+                        <div style="font-size: 1.1rem; font-weight: 700; color: var(--dark);">${escapeHtml(apt.patientName)}</div>
+                        <div style="font-size: 0.85rem; color: var(--muted); margin-top: 4px;">Patient ID: ${escapeHtml(apt.patientId)}</div>
+                    </div>
+                </div>
+
+                <div style="background: var(--light-bg); border-radius: var(--radius-md); padding: 18px; margin-bottom: 24px; border: 1px solid var(--border); display: flex; justify-content: space-around; text-align: center;">
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700;">Scheduled Date</div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: var(--dark); margin-top: 2px;">${escapeHtml(apt.appointmentDate)}</div>
+                    </div>
+                    <div style="border-left: 1px solid var(--border);"></div>
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700;">Scheduled Time</div>
+                        <div style="font-size: 1.2rem; font-weight: 800; color: var(--primary); margin-top: 2px;">${escapeHtml(apt.appointmentTime)}</div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px;">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 6px;">Reason for Appointment</div>
+                    <div style="background: white; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px; color: var(--slate); font-size: 0.95rem;">
+                        ${apt.reason ? escapeHtml(apt.reason) : '<span style="color: var(--muted); font-style: italic;">No specific reason provided by patient.</span>'}
+                    </div>
+                </div>
+
+                <!-- Action Controls (Hidden on Print) -->
+                <div class="no-print" style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid var(--border);">
+                    ${isScheduled ? `
+                        <button id="cancel-detail-btn" class="btn btn-secondary" style="color: var(--danger);">Cancel Appointment</button>
+                        <a href="edit-appointment.html?id=${encodeURIComponent(apt.appointmentId)}" class="btn btn-primary">Reschedule Date / Time</a>
+                    ` : ''}
+
+                    ${isCancelled ? `
+                        <button id="delete-detail-btn" class="btn btn-danger">Delete Cancelled Record</button>
+                    ` : ''}
+                </div>
+            `;
+
+            // Populate full-page receipt for print / PDF
+            document.getElementById('printable-receipt').innerHTML = `
+                <div class="rec-header">
+                    <h2>MediPortal</h2>
+                    <p>Healthcare Consultation Desk</p>
+                    <p style="font-weight: 700; margin-top: 8px; font-size: 14pt;">OFFICIAL APPOINTMENT BOOKING RECEIPT</p>
+                </div>
+
+                <div class="rec-token">
+                    APPOINTMENT REF: ${escapeHtml(apt.appointmentId)}
+                </div>
+
+                <div class="rec-grid">
+                    <div class="rec-block">
+                        <div class="rec-section-title">Appointment schedule</div>
+                        <div class="rec-row">
+                            <span>Status</span>
+                            <strong>${escapeHtml(apt.status)}</strong>
+                        </div>
+                        <div class="rec-row">
+                            <span>Date</span>
+                            <strong>${escapeHtml(apt.appointmentDate)}</strong>
+                        </div>
+                        <div class="rec-row">
+                            <span>Time</span>
+                            <strong>${escapeHtml(apt.appointmentTime)}</strong>
+                        </div>
+
+                        <div class="rec-section-title" style="margin-top: 8px;">Doctor information</div>
+                        <div class="rec-row">
+                            <span>Doctor</span>
+                            <strong>${escapeHtml(apt.doctorName)}</strong>
+                        </div>
+                        <div class="rec-row">
+                            <span>Specialty</span>
+                            <span>${escapeHtml(apt.specialization)}</span>
+                        </div>
+                        <div class="rec-row">
+                            <span>Doctor ID</span>
+                            <span>${escapeHtml(apt.doctorId)}</span>
+                        </div>
+                    </div>
+
+                    <div class="rec-block">
+                        <div class="rec-section-title">Patient information</div>
+                        <div class="rec-row">
+                            <span>Patient</span>
+                            <strong>${escapeHtml(apt.patientName)}</strong>
+                        </div>
+                        <div class="rec-row">
+                            <span>Patient ID</span>
+                            <span>${escapeHtml(apt.patientId)}</span>
+                        </div>
+                        <div class="rec-row">
+                            <span>Booked on</span>
+                            <span>${new Date(apt.createdAt).toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rec-block">
+                    <div class="rec-section-title">Reason for visit</div>
+                    ${apt.reason ? `
+                    <div class="rec-reason">${escapeHtml(apt.reason)}</div>
+                    ` : `
+                    <div class="rec-reason" style="font-style: italic; color: #64748b;">No specific reason provided by patient.</div>
+                    `}
+                </div>
+
+                <div class="rec-footer">
+                    <p style="font-weight: 800;">PLEASE ARRIVE 10 MINUTES BEFORE YOUR SCHEDULED TIME</p>
+                    <p>Present this receipt at the clinic reception when you check in.</p>
+                    <p>Support: +1 (800) 555-0199 | mediportal.health</p>
+                    <p>&copy; 2026 MediPortal Healthcare System</p>
+                </div>
+            `;
+
+            document.getElementById('cancel-detail-btn')?.addEventListener('click', async () => {
+                const confirmed = await showConfirmModal(
+                    'Cancel Appointment',
+                    'Are you sure you want to cancel this appointment? The slot will immediately become available for other patients.',
+                    'Yes, Cancel Appointment',
+                    true
+                );
+                if (confirmed) {
+                    try {
+                        const res = await API.patch(`/api/appointments/${encodeURIComponent(apt.appointmentId)}/cancel`);
+                        if (res.success) {
+                            showToast('Appointment cancelled successfully.', 'info');
+                            loadAppointmentDetails();
+                        }
+                    } catch (err) {
+                        showToast(err.message || 'Failed to cancel.', 'error');
+                    }
+                }
+            });
+
+            document.getElementById('delete-detail-btn')?.addEventListener('click', async () => {
+                const confirmed = await showConfirmModal(
+                    'Delete Record',
+                    'Are you sure you want to permanently delete this cancelled appointment record?',
+                    'Yes, Delete Record',
+                    true
+                );
+                if (confirmed) {
+                    try {
+                        const res = await API.delete(`/api/appointments/${encodeURIComponent(apt.appointmentId)}`);
+                        if (res.success) {
+                            showToast('Appointment deleted.', 'success');
+                            setTimeout(() => window.location.href = 'my-appointments.html', 800);
+                        }
+                    } catch (err) {
+                        showToast(err.message || 'Failed to delete record.', 'error');
+                    }
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAppointmentDetails);
+    </script>
+</body>
+</html>

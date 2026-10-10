@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reschedule Appointment | MediPortal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4.5C5 15.2 8.8 19 13.5 19H14v2h-2a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2h-1v-2h.5c4.7 0 8.5-3.8 8.5-8.5v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1c0 3.6-2.9 6.5-6.5 6.5S9 14.1 9 10.5V6h8v4.5a1 1 0 0 0 2 0z"/></svg>
+                </div>
+                <span>MediPortal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="doctors.html">Find Doctors</a></li>
+                <li class="protected-nav-link"><a href="dashboard.html">Dashboard</a></li>
+                <li class="protected-nav-link"><a href="my-appointments.html" class="active">My Appointments</a></li>
+                <li class="protected-nav-link"><a href="profile.html">My Profile</a></li>
+            </ul>
+
+            <div class="auth-nav" id="navbar-auth-actions"></div>
+        </div>
+    </header>
+
+    <main style="padding: 40px 0; flex-grow: 1;">
+        <div class="container" style="max-width: 720px;">
+            <div style="margin-bottom: 24px;">
+                <a href="my-appointments.html" style="font-weight: 600; font-size: 0.9rem;">&larr; Back to My Appointments</a>
+                <h1 style="font-size: 1.8rem; color: var(--dark); font-weight: 800; margin-top: 8px;">
+                    Reschedule Appointment <span id="reschedule-id-header" style="color: var(--primary);">---</span>
+                </h1>
+            </div>
+
+            <!-- Current Appointment Summary Card -->
+            <div class="card" style="margin-bottom: 24px; background: var(--light-bg);">
+                <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 8px;">Current Booking</div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <strong id="curr-doctor" style="font-size: 1.1rem; color: var(--dark);">---</strong>
+                        <span id="curr-spec" class="doctor-specialty" style="margin-left: 8px;">---</span>
+                    </div>
+                    <div style="font-weight: 600; color: var(--slate);">
+                        <span id="curr-date">---</span> at <span id="curr-time">---</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reschedule Form -->
+            <div class="card">
+                <form id="reschedule-form">
+                    <div class="form-group">
+                        <label class="form-label" for="new-date">Select New Date <span class="required">*</span></label>
+                        <input type="date" id="new-date" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                            <label class="form-label" style="margin-bottom: 0;">Select New Time Slot <span class="required">*</span></label>
+                            <span id="reschedule-slot-indicator" style="font-size: 0.82rem; color: var(--muted);"></span>
+                        </div>
+
+                        <div id="reschedule-slots-container" style="min-height: 80px; display: flex; align-items: center; justify-content: center; background: var(--light-bg); border: 1px dashed var(--border); border-radius: var(--radius-md); padding: 16px;">
+                            <p style="color: var(--muted); font-size: 0.9rem;">Select a date to check available slots.</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label" for="new-reason">Updated Reason (Optional)</label>
+                        <textarea id="new-reason" class="form-control" maxlength="500" placeholder="Update reason for visit..."></textarea>
+                    </div>
+
+                    <div style="display: flex; gap: 12px; justify-content: flex-end; margin-top: 28px;">
+                        <a href="my-appointments.html" class="btn btn-secondary">Cancel</a>
+                        <button type="submit" id="reschedule-submit-btn" class="btn btn-primary">
+                            Save Rescheduled Slot
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MediPortal Healthcare System &bull; Patient Appointment Management</p>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const appointmentId = urlParams.get('id');
+
+        let appointmentData = null;
+        let chosenSlot = null;
+
+        async function initReschedule() {
+            const user = await Auth.requireAuth();
+            if (!user) return;
+
+            if (!appointmentId) {
+                window.location.href = 'my-appointments.html';
+                return;
+            }
+
+            // Set minimum date to today
+            const todayStr = new Date().toISOString().split('T')[0];
+            const dateInput = document.getElementById('new-date');
+            dateInput.min = todayStr;
+
+            try {
+                const res = await API.get(`/api/appointments/${encodeURIComponent(appointmentId)}`);
+                if (res.success && res.data) {
+                    appointmentData = res.data;
+                    document.getElementById('reschedule-id-header').textContent = appointmentData.appointmentId;
+                    document.getElementById('curr-doctor').textContent = appointmentData.doctorName;
+                    document.getElementById('curr-spec').textContent = appointmentData.specialization;
+                    document.getElementById('curr-date').textContent = appointmentData.appointmentDate;
+                    document.getElementById('curr-time').textContent = appointmentData.appointmentTime;
+                    document.getElementById('new-reason').value = appointmentData.reason || '';
+
+                    dateInput.value = appointmentData.appointmentDate;
+                    chosenSlot = appointmentData.appointmentTime;
+
+                    loadSlotsForDate(appointmentData.appointmentDate);
+                }
+            } catch (err) {
+                showToast(err.message || 'Failed to load appointment details.', 'error');
+                setTimeout(() => window.location.href = 'my-appointments.html', 1500);
+            }
+
+            dateInput.addEventListener('change', () => {
+                loadSlotsForDate(dateInput.value);
+            });
+
+            document.getElementById('reschedule-form').addEventListener('submit', handleRescheduleSubmit);
+        }
+
+        async function loadSlotsForDate(dateVal) {
+            const container = document.getElementById('reschedule-slots-container');
+            const indicator = document.getElementById('reschedule-slot-indicator');
+            if (!dateVal || !appointmentData) return;
+
+            container.innerHTML = `<p style="color: var(--muted); font-size: 0.9rem;">Checking slots...</p>`;
+
+            try {
+                const res = await API.get(`/api/doctors/${encodeURIComponent(appointmentData.doctorId)}/slots?date=${encodeURIComponent(dateVal)}`);
+                if (res.success && res.data) {
+                    const slots = res.data;
+                    if (slots.length === 0) {
+                        container.innerHTML = `<p style="color: var(--danger); font-size: 0.9rem;">Doctor has no clinic hours on this day.</p>`;
+                        indicator.textContent = '0 slots';
+                        return;
+                    }
+
+                    indicator.textContent = `${slots.filter(s => s.available).length} available`;
+
+                    container.innerHTML = `
+                        <div class="slots-grid" style="width: 100%;">
+                            ${slots.map(s => {
+                                // If slot is same as currently booked slot for this appointment, allow it
+                                const isCurrent = (dateVal === appointmentData.appointmentDate && s.time === appointmentData.appointmentTime);
+                                const isAvail = s.available || isCurrent;
+                                const isSel = (s.time === chosenSlot);
+                                return `
+                                    <button type="button" 
+                                            class="slot-btn ${isAvail ? 'available' : 'disabled'} ${isSel ? 'selected' : ''}" 
+                                            data-time="${escapeHtml(s.time)}"
+                                            ${isAvail ? '' : 'disabled'}>
+                                        ${escapeHtml(s.time)} ${isCurrent ? '(Current)' : ''}
+                                    </button>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+
+                    container.querySelectorAll('.slot-btn.available').forEach(btn => {
+                        btn.addEventListener('click', () => {
+                            container.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
+                            btn.classList.add('selected');
+                            chosenSlot = btn.getAttribute('data-time');
+                        });
+                    });
+                }
+            } catch (err) {
+                container.innerHTML = `<p style="color: var(--danger);">${escapeHtml(err.message || 'Failed to fetch slots.')}</p>`;
+            }
+        }
+
+        async function handleRescheduleSubmit(e) {
+            e.preventDefault();
+
+            if (!chosenSlot) {
+                showToast('Please select a time slot.', 'error');
+                return;
+            }
+
+            const newDate = document.getElementById('new-date').value;
+            const newReason = document.getElementById('new-reason').value.trim();
+
+            const btn = document.getElementById('reschedule-submit-btn');
+            btn.disabled = true;
+            btn.textContent = 'Saving new slot...';
+
+            try {
+                const res = await API.put(`/api/appointments/${encodeURIComponent(appointmentId)}`, {
+                    appointmentDate: newDate,
+                    appointmentTime: chosenSlot,
+                    reason: newReason
+                });
+
+                if (res.success) {
+                    showToast('Appointment rescheduled successfully!', 'success');
+                    setTimeout(() => {
+                        window.location.href = `appointment-details.html?id=${encodeURIComponent(appointmentId)}`;
+                    }, 800);
+                }
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = 'Save Rescheduled Slot';
+                showToast(err.message || 'Rescheduling failed. Slot may have been taken.', 'error');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initReschedule);
+    </script>
+</body>
+</html>

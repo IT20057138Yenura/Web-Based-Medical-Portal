@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Dashboard | MediPortal</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <a href="index.html" class="brand-logo">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 24 24"><path d="M19 10.5V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v4.5C5 15.2 8.8 19 13.5 19H14v2h-2a1 1 0 0 0 0 2h4a1 1 0 0 0 0-2h-1v-2h.5c4.7 0 8.5-3.8 8.5-8.5v-1a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v1c0 3.6-2.9 6.5-6.5 6.5S9 14.1 9 10.5V6h8v4.5a1 1 0 0 0 2 0z"/></svg>
+                </div>
+                <span>MediPortal</span>
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="doctors.html">Find Doctors</a></li>
+                <li class="protected-nav-link"><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li class="protected-nav-link"><a href="my-appointments.html">My Appointments</a></li>
+                <li class="protected-nav-link"><a href="profile.html">My Profile</a></li>
+            </ul>
+
+            <div class="auth-nav" id="navbar-auth-actions"></div>
+        </div>
+    </header>
+
+    <main style="padding: 40px 0; flex-grow: 1;">
+        <div class="container">
+            <!-- Welcome Header -->
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; margin-bottom: 32px;">
+                <div>
+                    <h1 style="font-size: 2rem; color: var(--dark); font-weight: 800;">
+                        Welcome, <span id="dash-patient-name" style="color: var(--primary);">Patient</span>
+                    </h1>
+                    <p style="color: var(--muted); font-size: 0.95rem;">
+                        Patient ID: <strong id="dash-patient-id" style="color: var(--dark);">---</strong> &bull; Access your medical consultations and bookings.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <a href="book-appointment.html" class="btn btn-primary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Book Appointment
+                    </a>
+                    <a href="profile.html" class="btn btn-secondary">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/></svg>
+                        Manage Profile
+                    </a>
+                </div>
+            </div>
+
+            <!-- Stats Overview Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-bottom: 32px;">
+                <div class="card" style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--primary-light); color: var(--primary); display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700;">Scheduled</div>
+                        <div id="stat-scheduled" style="font-size: 1.8rem; font-weight: 800; color: var(--dark);">0</div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--success-light); color: var(--success); display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700;">Completed</div>
+                        <div id="stat-completed" style="font-size: 1.8rem; font-weight: 800; color: var(--dark);">0</div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 20px; display: flex; align-items: center; gap: 16px;">
+                    <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--danger-light); color: var(--danger); display: flex; align-items: center; justify-content: center;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.8rem; text-transform: uppercase; color: var(--muted); font-weight: 700;">Cancelled</div>
+                        <div id="stat-cancelled" style="font-size: 1.8rem; font-weight: 800; color: var(--dark);">0</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Next Upcoming Appointment Banner -->
+            <div id="upcoming-banner" class="card" style="margin-bottom: 32px; border-left: 5px solid var(--primary); display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                    <div>
+                        <span class="badge badge-scheduled" style="margin-bottom: 8px;">Next Upcoming Consultation</span>
+                        <h3 id="upcoming-doctor" style="font-size: 1.25rem; font-weight: 700; color: var(--dark);">Dr. Eleanor Vance</h3>
+                        <p id="upcoming-time" style="color: var(--slate); font-size: 0.95rem; margin-top: 4px;">
+                            Monday, Oct 5, 2026 at 10:30 AM &bull; Cardiology
+                        </p>
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <a id="upcoming-details-link" href="#" class="btn btn-primary btn-sm">View Details</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Appointments Table -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Recent Appointments</h3>
+                    <a href="my-appointments.html" style="font-size: 0.9rem; font-weight: 600;">View All &rarr;</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Appointment ID</th>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-appointments-tbody">
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--muted); padding: 30px;">
+                                    Loading your appointment schedule...
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 MediPortal Healthcare System &bull; Patient Appointment Management</p>
+        </div>
+    </footer>
+
+    <script src="js/notifications.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        async function initDashboard() {
+            const user = await Auth.requireAuth();
+            if (!user) return;
+
+            document.getElementById('dash-patient-name').textContent = user.fullName;
+            document.getElementById('dash-patient-id').textContent = user.patientId;
+
+            try {
+                const res = await API.get('/api/appointments/my');
+                if (res.success && res.data) {
+                    const appointments = res.data;
+
+                    // Update stats
+                    const scheduled = appointments.filter(a => a.status === 'SCHEDULED');
+                    const completed = appointments.filter(a => a.status === 'COMPLETED');
+                    const cancelled = appointments.filter(a => a.status === 'CANCELLED');
+
+                    document.getElementById('stat-scheduled').textContent = scheduled.length;
+                    document.getElementById('stat-completed').textContent = completed.length;
+                    document.getElementById('stat-cancelled').textContent = cancelled.length;
+
+                    // Highlight next upcoming
+                    if (scheduled.length > 0) {
+                        const next = scheduled[0];
+                        document.getElementById('upcoming-doctor').textContent = next.doctorName;
+                        document.getElementById('upcoming-time').textContent = `${next.appointmentDate} at ${next.appointmentTime} &bull; ${next.specialization}`;
+                        document.getElementById('upcoming-details-link').href = `appointment-details.html?id=${encodeURIComponent(next.appointmentId)}`;
+                        document.getElementById('upcoming-banner').style.display = 'block';
+                    }
+
+                    // Render recent list
+                    const tbody = document.getElementById('recent-appointments-tbody');
+                    if (appointments.length === 0) {
+                        tbody.innerHTML = `
+                            <tr>
+                                <td colspan="6" style="text-align: center; color: var(--muted); padding: 30px;">
+                                    You have no scheduled appointments yet. 
+                                    <a href="book-appointment.html" style="font-weight: 600;">Book your first appointment now</a>.
+                                </td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    const topRecent = appointments.slice(0, 5);
+                    tbody.innerHTML = topRecent.map(apt => `
+                        <tr>
+                            <td><strong style="color: var(--primary);">${escapeHtml(apt.appointmentId)}</strong></td>
+                            <td><strong>${escapeHtml(apt.doctorName)}</strong></td>
+                            <td><span class="doctor-specialty">${escapeHtml(apt.specialization)}</span></td>
+                            <td>${escapeHtml(apt.appointmentDate)} &bull; ${escapeHtml(apt.appointmentTime)}</td>
+                            <td><span class="badge badge-${apt.status.toLowerCase()}">${escapeHtml(apt.status)}</span></td>
+                            <td>
+                                <a href="appointment-details.html?id=${encodeURIComponent(apt.appointmentId)}" class="btn btn-secondary btn-sm">
+                                    Details
+                                </a>
+                            </td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (err) {
+                showToast(err.message || 'Failed to load appointment schedule.', 'error');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', initDashboard);
+    </script>
+</body>
+</html>
